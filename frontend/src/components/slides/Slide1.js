@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Button1} from '../common/Buttons';
 
 const Wrapper = styled.div`
-    width: ${document.documentElement.clientWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
 `
 
@@ -16,7 +16,6 @@ const MainBannerWrapper = styled.div`
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
-    
 `
 
 const Title = styled.div`
@@ -24,9 +23,13 @@ const Title = styled.div`
     font-weight: bold;
 `
 
-const Slide1 = ({page, setPage}) => {
+const ButtonWrapper = styled.div`
+    
+`
+
+const Slide1 = ({width, pageUp, enableTransition}) => {
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <MainBannerWrapper>
                 <Title>
                     Tirrilee Estimate <br />
@@ -34,9 +37,11 @@ const Slide1 = ({page, setPage}) => {
                 </Title>
                 <img src={process.env.PUBLIC_URL+"/images/Service_illust.png"} alt="banner"/>
             </MainBannerWrapper>
-            <Button1 onClick={() => setPage(page+1)}>
-                <span>시작하기</span>
-            </Button1>
+            <ButtonWrapper onClick={enableTransition}>
+                <Button1 onClick={pageUp}>
+                    <span>시작하기</span>
+                </Button1>
+            </ButtonWrapper>
         </Wrapper>
     )
 }

@@ -14,6 +14,7 @@ const Button1 = styled.div`
     border-radius: 4px;
     box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
+    cursor: pointer;
 `
 
 const Button2 = styled.div`
@@ -50,6 +51,8 @@ const Button3 = styled.div`
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     margin-bottom: 20px;
+    box-sizing: border-box;
+    cursor: pointer;
 
     .title {
         font-size: 15px;
@@ -81,6 +84,7 @@ const Button4 = styled.div`
     align-items: center;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
 `
 
 const Button5 = styled.div`
@@ -98,6 +102,7 @@ const Button5 = styled.div`
     .right {
         color: #226bef;
     }
+    cursor: pointer;
 `
 const Button6 = styled.div`
     width: 40%;
@@ -126,6 +131,7 @@ const Button6 = styled.div`
         font-weight: bold;
         color: #226bef;
     }
+    cursor: pointer;
 `
 
 export {Button1, Button2, Button3, Button4, Button5, Button6};

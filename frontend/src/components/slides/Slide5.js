@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { Button2, Button4, Button5 } from '../common/Buttons';
 
 const Wrapper = styled.div`
-    width: ${document.documentElement.clientWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
 `
 
@@ -25,9 +25,27 @@ const MoveButtonWrapper = styled.div`
 
 `
 
-const Slide5 = ({page, setPage}) => {
+const Slide5 = ({ width, pageUp, pageDown, enableTransition, setMultiple}) => {
+    const [lastIndex, setLastIndex] = useState(0);
+    const contents = [
+        {
+            'left' : '~20P',
+            'right' : '기본 금액 x1',
+            multiple : 1
+        },
+        {
+            'left' : '21p~30p',
+            'right' : '기본 금액 x2',
+            multiple : 2,
+        }
+    ]
+
+    useEffect(() => {
+        setMultiple(1);
+    }, [])
+
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <Button2>
                 <div>
                     <div className="title">2단계, 작업 페이지를 선정해봅시다.</div>
@@ -47,20 +65,23 @@ const Slide5 = ({page, setPage}) => {
                         </div>
                     </div>
                 </TransparentButton>
-                <Button5>
-                    <span className="left">~20P</span>
-                    <span className="right">기본 금액 x1</span>
-                </Button5>
-                <Button5>
-                    <span className="left">21P~30p</span>
-                    <span className="right">기본 금액 x2</span>
-                </Button5>
+                {contents.map((content,index) => (
+                    <Button5 key={index} onClick={() => {
+                        if(index !== lastIndex) {
+                            setMultiple(contents[index]['multiple']);
+                            setLastIndex(index);
+                        }
+                    }} style={index === lastIndex ? {border : '1px solid #226bef'} : {}}>
+                        <span className="left">{content['left']}</span>
+                        <span className="right">{content['right']}</span>
+                    </Button5>
+                ))}
             </Background>
-            <MoveButtonWrapper>
-                <Button4 onClick={() => setPage(page-1)}>
+            <MoveButtonWrapper onClick={enableTransition}>
+                <Button4 onClick={pageDown}>
                     이전 단계
                 </Button4>
-                <Button4 onClick={() => setPage(page+1)}>
+                <Button4 onClick={pageUp}>
                     다음 단계
                 </Button4>
             </MoveButtonWrapper>

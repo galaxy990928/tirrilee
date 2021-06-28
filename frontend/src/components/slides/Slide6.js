@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {BiSquare, BiChevronDownSquare} from 'react-icons/bi';
 import { Button2, Button4, Button5 } from '../common/Buttons';
+import produce from 'immer';
 
 const Wrapper = styled.div`
-    width: ${document.documentElement.clientWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
+    svg {
+        position: relative;
+        top: 8px;
+        font-size: 30px;
+    }
 `
 
 const Background = styled.div`
@@ -26,9 +32,62 @@ const MoveButtonWrapper = styled.div`
 
 `
 
-const Slide6 = ({page, setPage}) => {
+const Slide6 = ({width, pageUp, pageDown, enableTransition, changePrice}) => {
+
+    const [contents, setContents] = useState([
+        {
+            'id' : 1,
+            'left' : 'GPS (내 주변)',
+            'right' : '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+        {
+            'id' : 2,
+            'left' : '지도 (맵 커스텀)',
+            'right' : '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+        {
+            'id' : 3,
+            'left' : '카카오톡 푸쉬',
+            'right' : '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+        {
+            'id' : 4,
+            'left' : '커뮤니티',
+            'right' : '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+        {
+            'id' : 5,
+            'left' : '공유하기',
+            'right' : '100만원',
+            'price' : 1000000,
+            'check' : false,
+        },
+        {
+            'id' : 6,
+            'left' : '유저타입확장',
+            'right' : '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+        {
+            'id' : 7,
+            'left' : '채팅(실시간)',
+            'right': '200만원',
+            'price' : 2000000,
+            'check' : false,
+        },
+    ]);
+
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <Button2>
                 <div>
                     <div className="title">
@@ -49,44 +108,32 @@ const Slide6 = ({page, setPage}) => {
                         </div>
                     </div>
                 </TransparentButton>
-                <Button5>
-                    <span className="left">GPS (내 주변)</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">지도 (맵 커스텀)</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">카카오톡 푸쉬</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">커뮤니티</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">공유하기</span>
-                    <span className="right">100만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">유저타입확장</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">채팅(실시간)</span>
-                    <span className="right">200만원 <BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
-                <Button5>
-                    <span className="left">필요없어요.</span>
-                    <span className="right">0원<BiSquare/> <BiChevronDownSquare /></span>
-                </Button5>
+                {
+                    contents.map((content,index) => (
+                        <Button5 key={index} onClick={() => {
+                            if(!contents[index]['check']) {
+                                changePrice(contents[index]['price']);
+                            } else {
+                                changePrice(-contents[index]['price']);
+                            }
+                            setContents(produce(contents, draftState => {
+                                draftState[index]['check'] = !draftState[index]['check'];
+                            }))
+                        }}>
+                            <span className="left">{content['left']}</span>
+                            <span className='right'>
+                                {content['right']}
+                                {content['check'] ? <BiChevronDownSquare /> : <BiSquare />} 
+                            </span>
+                        </Button5>
+                    ))
+                }
             </Background>
-            <MoveButtonWrapper>
-                <Button4 onClick={() => setPage(page-1)}>
+            <MoveButtonWrapper onClick={enableTransition}>
+                <Button4 onClick={pageDown}>
                     이전 단계
                 </Button4>
-                <Button4 onClick={() => setPage(page+1)}>
+                <Button4 onClick={pageUp}>
                     다음 단계
                 </Button4>
             </MoveButtonWrapper>

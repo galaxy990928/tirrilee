@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { Button2, Button3, Button4 } from '../common/Buttons';
 
 const Wrapper = styled.div`
-    width: ${document.documentElement.clientWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
 `
 
@@ -25,9 +25,33 @@ const MoveButtonWrapper = styled.div`
 
 `
 
-const Slide4 = ({page, setPage}) => {
+const Slide4 = ({ width, pageUp, pageDown, enableTransition, changePrice}) => {
+    const [lastIndex, setLastIndex] = useState(0);
+    const contents = [
+        {
+            id : 1,
+            'title' : '네! 디자인이 되어 있어요.',
+            'sub' : '멋져요! 개발을 할 수 있도록 디자인을 함께 보완해요',
+            'priceName' : '+50만원',
+            price : 500000,
+            check : true,
+        },
+        {
+            id : 2,
+            'title' : '앗.. 디자인은 없어요.',
+            'sub' : '괜찮아요:) 티릴리와 함께 디자인을 진행해봐요.',
+            'priceName' : '+100만원',
+            price : 1000000,
+            check : false
+        }
+    ]
+
+    useEffect(() => {
+        changePrice(contents[lastIndex]['price']);
+    }, [])
+
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <Button2>
                 <div>
                     <div className="title">1단계, 먼저 개발범위를 먼저 생각해보아요.</div>
@@ -46,26 +70,26 @@ const Slide4 = ({page, setPage}) => {
                         </div>
                     </div>
                 </TransparentButton>
-                <Button3>
-                <div>
-                    <div className="title">네! 디자인이 되어 있어요.</div> 
-                    <div className="sub">멋져요! 개발을 할 수 있도록 디자인을 함께 보완해요.</div>
-                    <div className="price">+50만원</div>
-                </div>
-            </Button3>
-            <Button3>
-                <div>
-                    <div className="title">앗.. 디자인은 없어요.</div> 
-                    <div className="sub">괜찮아요:) 티릴리와 함께 디자인을 진행해봐요.</div>
-                    <div className="price">+100만원</div>
-                </div>
-            </Button3>
+                {contents.map((content, index) => (
+                    <Button3 key={index} onClick={() => {
+                        if(index !== lastIndex) {
+                            changePrice(-contents[lastIndex]['price'] + contents[index]['price']);
+                            setLastIndex(index);
+                        }
+                    }} style={index === lastIndex ? {border : '1px solid #226bef'} : {}}>
+                        <div>
+                            <div className="title">{content['title']}</div> 
+                            <div className="sub">{content['sub']}</div>
+                            <div className="price">{content['priceName']}</div>
+                        </div>
+                    </Button3>
+                ))}
             </Background>
-            <MoveButtonWrapper>
-                <Button4 onClick={() => setPage(page-1)}>
+            <MoveButtonWrapper onClick={enableTransition}>
+                <Button4 onClick={pageDown}>
                     이전 단계
                 </Button4>
-                <Button4 onClick={() => setPage(page+1)}>
+                <Button4 onClick={pageUp}>
                     다음 단계
                 </Button4>
             </MoveButtonWrapper>

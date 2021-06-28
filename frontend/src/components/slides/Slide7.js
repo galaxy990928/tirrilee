@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {BiSquare, BiChevronDownSquare} from 'react-icons/bi';
 import { Button2, Button4, Button6 } from '../common/Buttons';
 
 const Wrapper = styled.div`
-    width: ${document.documentElement.clientWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
+    svg {
+        position: relative;
+        top: 8px;
+        font-size: 30px;
+    }
 `
 
 const Background = styled.div`
@@ -38,9 +43,37 @@ const MoveButtonWrapper = styled.div`
     justify-content: space-between;
 `
 
-const Slide7 = ({page, setPage}) => {
+const Slide7 = ({width, pageUp, pageDown, enableTransition, changePrice}) => {
+        const [lastIndex, setLastIndex] = useState(3);
+        const contents = [
+        {
+            'title' : '서비스 내에서 관리',
+            'sub' : '관리자 권한 부여',
+            'priceName' : '100만원',
+            'price' : 1000000,
+        },
+        {
+            'title' : '기본 Admin',
+            'sub' : '관리자 페이지 운영',
+            'priceName' : '150만원',
+            'price' : 1500000,
+        },
+        {
+            'title' : '확장 Admin',
+            'sub' : '관리자 페이지 + 대쉬보드',
+            'priceName' : '200만원',
+            'price' : 2000000,
+        },
+        {
+            'title' : '필요없어요.',
+            'sub' : '해당 기능이 필요없어요',
+            'priceName' : '0원',
+            'price' : 0,
+        }
+    ];
+
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <Button2>
                 <div>
                     <div className="title">
@@ -61,57 +94,30 @@ const Slide7 = ({page, setPage}) => {
                     </div>
                 </TransparentButton>
                 <ButtonWrapper>
-                    <Button6>
-                        <CheckBoxWrapper>
-                            <BiSquare/>
-                            <BiChevronDownSquare />
-                        </CheckBoxWrapper>
-                        <div>
-                            <div className="title">서비스 내에서 관리</div> 
-                            <div className="sub">관리자 권한 부여</div>
-                            <div className="price">100만원</div>
-                        </div>
-                    </Button6>
-                    <Button6>
-                        <CheckBoxWrapper>
-                                <BiSquare/>
-                                <BiChevronDownSquare />
-                        </CheckBoxWrapper>
-                        <div>
-                            <div className="title">기본 Admin</div> 
-                            <div className="sub">관리자 페이지 운영</div>
-                            <div className="price">150만원</div>
-                        </div>
-                    </Button6>
-                    <Button6>
-                        <CheckBoxWrapper>
-                                <BiSquare/>
-                                <BiChevronDownSquare />
-                        </CheckBoxWrapper>
-                        <div>
-                            <div className="title">확장 Admin</div> 
-                            <div className="sub">관리자 페이지<br/>+대쉬보드</div>
-                            <div className="price">200만원</div>
-                        </div>
-                    </Button6>
-                    <Button6>
-                        <CheckBoxWrapper>
-                            <BiSquare/>
-                            <BiChevronDownSquare />
-                        </CheckBoxWrapper>
-                        <div>
-                            <div className="title">필요없어요.</div> 
-                            <div className="sub">해당 기능이 필요없어요.</div>
-                            <div className="price">0원</div>
-                        </div>
-                    </Button6>
+                    {contents.map((content, index) => (
+                        <Button6 key={index} onClick={() => {
+                            if(index !== lastIndex) {
+                                changePrice(-contents[lastIndex]['price'] + contents[index]['price']);
+                                setLastIndex(index);
+                            }
+                        }}>
+                            <CheckBoxWrapper>
+                                {index === lastIndex ? <BiChevronDownSquare /> : <BiSquare/>}
+                            </CheckBoxWrapper>
+                            <div>
+                                <div className="title">{content['title']}</div> 
+                                <div className="sub">{content['sub']}</div>
+                                <div className="price">{content['priceName']}</div>
+                            </div>
+                        </Button6>
+                    ))}
                 </ButtonWrapper>
             </Background>
-            <MoveButtonWrapper>
-                <Button4 onClick={() => setPage(page-1)}>
+            <MoveButtonWrapper onClick={enableTransition}>
+                <Button4 onClick={pageDown}>
                     이전 단계
                 </Button4>
-                <Button4 onClick={() => setPage(page+1)}>
+                <Button4 onClick={pageUp}>
                     다음 단계
                 </Button4>
             </MoveButtonWrapper>

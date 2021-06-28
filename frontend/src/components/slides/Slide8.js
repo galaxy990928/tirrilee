@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Button1} from '../common/Buttons';
 
 const Wrapper = styled.div`
-    width: ${window.innerWidth+'px'};
+    width: ${props => props.width+'px'};
     box-sizing: border-box;
 `
 
@@ -38,14 +38,14 @@ const MainContent = styled.div`
     }
 `
 
-const Slide8 = ({page, setPage}) => {
+const Slide8 = ({width, price, title, reset, multiple}) => {
     return (
-        <Wrapper>
+        <Wrapper width={width}>
             <ContentWrapper>
                 <MainContent>
                     <div>수고하셨습니다.</div>
-                    <div className="blue">선택 프로젝트 : OOO</div>
-                    <div className="blue">견적 가격 : 대략 OOO만원</div>
+                    <div className="blue">선택 프로젝트 : {title}</div>
+                    <div className="blue">견적 가격 : 대략 {price/10000 * multiple}만원</div>
                     <div>입니다.</div>
                 </MainContent>
             </ContentWrapper>
@@ -54,9 +54,9 @@ const Slide8 = ({page, setPage}) => {
                     <div>하지만 정확한 견적은 아니에요 :)</div>
                     <div>티릴리와 함께 같이 진단해보고 멋진 서비스를 만들어보아요,</div>
                 </div>
-            </SubContentWrapper>
-            <Button1 onClick={() => setPage(0)}>
-                다시하기
+            </SubContentWrapper >
+            <Button1 onClick={reset}>
+                다시 하기
             </Button1>
         </Wrapper>
     )
