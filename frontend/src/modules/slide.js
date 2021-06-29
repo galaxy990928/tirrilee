@@ -41,7 +41,7 @@ const initialState = {
     price : 0,
     title : '',
     multiple : 1,
-    width : document.documentElement.clientWidth - 10,
+    width : document.documentElement.offsetWidth,
     isResize : false,
 };
 
@@ -65,7 +65,7 @@ const slide = handleActions(
         }),
         [CHANGE_WIDTH] : (state, payload) => ({
             ...state,
-            width : document.documentElement.clientWidth,
+            width : document.documentElement.offsetWidth,
         }),
         [CHANGE_IS_RESIZE] : (state, {payload : isResize}) => ({
             ...state,
