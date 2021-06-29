@@ -65,7 +65,7 @@ const slide = handleActions(
         }),
         [CHANGE_WIDTH] : (state, payload) => ({
             ...state,
-            width : document.documentElement.clientWidth - 10,
+            width : document.documentElement.clientWidth,
         }),
         [CHANGE_IS_RESIZE] : (state, {payload : isResize}) => ({
             ...state,
